@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
-import EmailValidator from 'email-validator';
+import React, { useState } from "react";
+import EmailValidator from "email-validator";
+import { addQuestion } from "../../../utils/queries";
 
 const AddQuestionModal = (props) => {
   const [warnings, setWarning] = useState({});
   const [info, setInfo] = useState({
-    question: '',
-    nickName: '',
-    email: '',
+    question: "",
+    nickName: "",
+    email: "",
   });
+  console.log("props in qna", props);
   const showHideClassName = props.show
-    ? 'modal modal-show'
-    : 'modal modal-hide';
+    ? "modal modal-show"
+    : "modal modal-hide";
 
   const handleSubmit = () => {
     if (checkIfMandatoryFieldsFilled()) {
-      alert('Question has been submitted! Thank you :)');
+      alert("Question has been submitted! Thank you :)");
+      let post = {
+        body: info.question,
+        name: info.nickName,
+        email: `${info.email}`,
+      };
+      addQuestion(props.product_id, post);
       props.handleClose();
     } else {
-      alert('Please fill out mandatory fields');
+      alert("Please fill out mandatory fields");
     }
   };
   const handleTextChange = (e, field) => {
@@ -60,52 +68,59 @@ const AddQuestionModal = (props) => {
   };
   return (
     <div className={showHideClassName}>
-      <div className='modal-main'>
+      <div className="modal-main">
         <form>
           <label
             className={
-              warnings.nickName ? 'addReviewField warning' : 'addReviewField'
-            }>
+              warnings.nickName ? "addReviewField warning" : "addReviewField"
+            }
+          >
             <div>Nickname:</div>
             <input
-              className='singleline-input'
-              type='text'
+              className="singleline-input"
+              type="text"
               value={info.nickName}
-              placeholder='Example: jackson11!'
-              onChange={(e) => handleTextChange(e, 'nickName')}></input>
+              placeholder="Example: jackson11!"
+              onChange={(e) => handleTextChange(e, "nickName")}
+            ></input>
           </label>
           <label
             className={
-              warnings.question ? 'addReviewField warning' : 'addReviewField'
-            }>
+              warnings.question ? "addReviewField warning" : "addReviewField"
+            }
+          >
             <div>Question:</div>
             <input
-              className='singleline-input'
-              type='text'
+              className="singleline-input"
+              type="text"
               value={info.question}
-              placeholder='Example: What is the texture like?'
-              onChange={(e) => handleTextChange(e, 'question')}></input>
+              placeholder="Example: What is the texture like?"
+              onChange={(e) => handleTextChange(e, "question")}
+            ></input>
           </label>
           <label
             className={
-              warnings.email ? 'addReviewField warning' : 'addReviewField'
-            }>
+              warnings.email ? "addReviewField warning" : "addReviewField"
+            }
+          >
             <div>Email:</div>
             <input
-              className='singleline-input'
-              type='email'
-              placeholder='Example: jackson11@email.com'
+              className="singleline-input"
+              type="email"
+              placeholder="Example: jackson11@email.com"
               value={info.email}
-              onChange={(e) => handleTextChange(e, 'email')}></input>
+              onChange={(e) => handleTextChange(e, "email")}
+            ></input>
           </label>
         </form>
-        <div className='modal-btns'>
+        <div className="modal-btns">
           <input
-            className='bottom-btn fs32 bold'
-            type='button'
+            className="bottom-btn fs32 bold"
+            type="button"
             onClick={handleSubmit}
-            value='Add Question'></input>
-          <button className='bottom-btn fs32 bold' onClick={props.handleClose}>
+            value="Add Question"
+          ></input>
+          <button className="bottom-btn fs32 bold" onClick={props.handleClose}>
             Close
           </button>
         </div>
